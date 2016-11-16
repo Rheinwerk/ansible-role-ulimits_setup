@@ -1,0 +1,14 @@
+galaxy_info:
+  author: Daniel Schneller
+  description: Sets up ulimits in /etc/security/limits.conf and sets up the pam_limits module
+  company: Rheinwerk
+  license: license (GPLv3)
+  min_ansible_version: 2.0
+  platforms:
+  - name: Ubuntu
+    versions:
+    - trusty
+  galaxy_tags:
+    - ulimits
+dependencies: []
+
