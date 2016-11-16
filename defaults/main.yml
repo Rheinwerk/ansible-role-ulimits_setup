@@ -3,8 +3,8 @@
 
 _ulimits_setup:
   limits:
-    - domain: *
-      type: soft
-      item: nofile
+    - domain: "*"
+      type: "soft"
+      item: "nofile"
       value: 1024
 
