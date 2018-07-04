@@ -13,4 +13,3 @@
   with_items:
     - "common-session"
     - "common-session-noninteractive"
-

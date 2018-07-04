@@ -7,4 +7,3 @@ _ulimits_setup:
       type: "soft"
       item: "nofile"
       value: 1024
-
