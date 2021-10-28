@@ -3,7 +3,7 @@ ulimits setup
 
 This role can be used to set up modified ulimits settings
 
-[![Build Status](https://travis-ci.org/Rheinwerk/ansible-role-ulimits_setup.svg?branch=master)](https://travis-ci.org/Rheinwerk/ansible-role-ulimits_setup)
+[![Build Status](https://github.com/Rheinwerk/ansible-role-ulimits_setup/actions/workflows/ci.yml/badge.svg)](https://github.com/Rheinwerk/ansible-role-ulimits_setup/actions/workflows/ci.yml)
 
 Requirements
 ------------
