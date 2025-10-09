@@ -1,6 +1,5 @@
 galaxy_info:
-  author: Daniel Schneller
-  namespace: rheinwerk
+  author: rheinwerk
   role_name: ulimits_setup
   description: Sets up ulimits in /etc/security/limits.conf and sets up the pam_limits module
   company: Rheinwerk
