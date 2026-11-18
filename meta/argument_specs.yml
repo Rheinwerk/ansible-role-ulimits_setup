@@ -1,0 +1,31 @@
+---
+argument_specs:
+  main:
+    short_description: Set limits in /etc/security/limits.conf and load pam_limits in the PAM session
+    options:
+      _ulimits_setup_limits:
+        type: list
+        elements: dict
+        description:
+          - Entries in /etc/security/limits.conf, see limits.conf(5).
+        options:
+          domain:
+            type: str
+            required: true
+            description:
+              - User name, C(@group), C(*) for everyone, or a UID/GID range.
+          type:
+            type: str
+            required: true
+            description:
+              - Limit type; C(-) sets soft and hard.
+          item:
+            type: str
+            required: true
+            description:
+              - Resource to limit.
+          value:
+            type: raw
+            required: true
+            description:
+              - A number of 0 or larger, or C(unlimited), C(infinity) or C(-1) for no limit; -20..19 for C(nice) and C(priority).

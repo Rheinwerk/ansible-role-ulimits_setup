@@ -1,0 +1,29 @@
+---
+# The role runs with its defaults (no tests/vars.yml): nofile 65536, soft and hard, for every user.
+- name: Verify
+  hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Read limits.conf
+      ansible.builtin.slurp:
+        src: /etc/security/limits.conf
+      register: verify_limits
+
+    - name: Read the PAM session configurations
+      ansible.builtin.slurp:
+        src: "/etc/pam.d/{{ item }}"
+      loop:
+        - common-session
+        - common-session-noninteractive
+      register: verify_pam
+
+    - name: The default limits are set and pam_limits is loaded
+      ansible.builtin.assert:
+        that:
+          - limits is search('^\\*\\s+soft\\s+nofile\\s+65536$', multiline=true)
+          - limits is search('^\\*\\s+hard\\s+nofile\\s+65536$', multiline=true)
+          - verify_pam.results | map(attribute='content') | map('b64decode') | select('search', '^session required pam_limits.so$', multiline=true) | list | length == 2
+        fail_msg: "limits.conf: {{ limits }}"
+      vars:
+        limits: "{{ verify_limits.content | b64decode }}"

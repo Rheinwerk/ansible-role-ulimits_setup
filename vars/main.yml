@@ -1,0 +1,33 @@
+---
+# Values pam_limits accepts (community.general.pam_limits, limits.conf(5)); tasks/assert.yml checks against them
+_ulimits_setup_limit_types:
+  - soft
+  - hard
+  - "-"
+
+_ulimits_setup_limit_items:
+  - core
+  - data
+  - fsize
+  - memlock
+  - nofile
+  - rss
+  - stack
+  - cpu
+  - nproc
+  - as
+  - maxlogins
+  - maxsyslogins
+  - priority
+  - locks
+  - sigpending
+  - msgqueue
+  - nice
+  - rtprio
+  - chroot
+
+_ulimits_setup_entry_keys:
+  - domain
+  - type
+  - item
+  - value
