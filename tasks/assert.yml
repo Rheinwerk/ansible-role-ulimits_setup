@@ -1,0 +1,32 @@
+---
+- name: Assert _ulimits_setup_limits is a list of limits.conf entries
+  ansible.builtin.assert:
+    that:
+      - _ulimits_setup_limits is sequence
+      - _ulimits_setup_limits is not string
+      - _ulimits_setup_limits | reject('mapping') | list | length == 0
+    fail_msg: "_ulimits_setup_limits must be a list of mappings with {{ _ulimits_setup_entry_keys | join(', ') }}"
+    quiet: true
+  tags:
+    - always
+
+- name: Assert every limits.conf entry is complete and valid
+  ansible.builtin.assert:
+    that:
+      - _ulimits_setup_entry_keys | difference(item.keys()) | length == 0
+      - item.domain is string
+      - item.domain is match('^\\S+\\Z')
+      - item.type in _ulimits_setup_limit_types
+      - item.item in _ulimits_setup_limit_items
+      - item.item in ['nice', 'priority'] or item.value | string is match('^([0-9]+|-1|unlimited|infinity)\\Z')
+      - item.item not in ['nice', 'priority'] or (item.value | string is match('^-?[0-9]+\\Z') and item.value | int >= -20 and item.value | int <= 19)
+    fail_msg: >-
+      {{ item }}: an entry needs {{ _ulimits_setup_entry_keys | join(', ') }}; domain without whitespace, type one of
+      {{ _ulimits_setup_limit_types | join(', ') }}, item one of {{ _ulimits_setup_limit_items | join(', ') }}, value a number
+      of 0 or larger, -1, unlimited or infinity (-20..19 for nice and priority)
+    quiet: true
+  loop: "{{ _ulimits_setup_limits }}"
+  loop_control:
+    label: "{{ item.domain | default('?') }} {{ item.type | default('?') }} {{ item.item | default('?') }}"
+  tags:
+    - always

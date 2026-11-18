@@ -4,19 +4,26 @@
 #
 # vim:et:ts=2:ft=ansible
 
+- name: Assert
+  ansible.builtin.import_tasks: assert.yml
+  tags:
+    - always
+
 - name: Create limits.conf entries # noqa args[module]
   community.general.pam_limits:
     domain: "{{ item.domain }}"
     limit_type: "{{ item.type }}"
     limit_item: "{{ item.item }}"
     value: "{{ item.value }}"
-  with_items: "{{ _ulimits_setup.limits }}"
+  loop: "{{ _ulimits_setup_limits }}"
+  loop_control:
+    label: "{{ item.domain }} {{ item.type }} {{ item.item }}"
 
 - name: Add pam_limits module to common session configs
   ansible.builtin.lineinfile:
     dest: '/etc/pam.d/{{ item }}'
     line: 'session required pam_limits.so'
     insertbefore: '# end of pam-auth-update config'
-  with_items:
-    - "common-session"
-    - "common-session-noninteractive"
+  loop:
+    - common-session
+    - common-session-noninteractive

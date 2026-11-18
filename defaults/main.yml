@@ -1,9 +1,14 @@
 ---
 # defaults file for ansible-role-ulimits_setup
 
-_ulimits_setup:
-  limits:
-    - domain: "*"
-      type: "soft"
-      item: "nofile"
-      value: 1024
+# Entries in /etc/security/limits.conf, one per pam_limits line (domain, type, item, value);
+# the default raises the open file limit for every user, as all CenterDevice images do.
+_ulimits_setup_limits:
+  - domain: "*"
+    type: "soft"
+    item: "nofile"
+    value: 65536
+  - domain: "*"
+    type: "hard"
+    item: "nofile"
+    value: 65536
